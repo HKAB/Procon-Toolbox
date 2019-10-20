@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Procon-Plan Y</title>
+
+    <!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<!-- <script src="https://kit.fontawesome.com/8fefc0f56f.js"></script> -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Custom styles for this template -->
+  </head>
+  <body class="d-flex flex-column h-100">
+    <!-- Begin page content -->
+<main role="main" class="flex-shrink-0">
+  <div class="our-scoreboard">
+      <!-- <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a> -->
+      <div class="team1">Team #</div>
+      <span class="badge badge-primary my-score" style="font-size: 30px;">9999</span>
+  </div>
+
+  <div class="their-scoreboard">
+      <!-- <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a> -->
+      <div class="team2">Team #</div>
+      <span class="badge badge-warning their-score" style="font-size: 30px;">9999</span>
+      
+  </div>
+
+
+  <div class="container mt-5">
+	<form>
+	  <div class="form-group">
+	    <label for="host">Host</label>
+	    <input type="text" class="form-control" id="host" aria-describedby="emailHelp" placeholder="sv-procon.uet.vnu.edu.vn:3000" value="sv-procon.uet.vnu.edu.vn:3000">
+	    <!-- <small id="hostHelp" class="form-text text-muted">Ex: 127.0.0.1:8080</small> -->
+	  </div>
+	  <div class="form-group">
+	    <label for="token">Token</label>
+	    <input type="text" class="form-control" id="token" placeholder="procon30_example_token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTIwIiwiaWF0IjoxNTcxMTU4NjQ4LCJleHAiOjE1NzExNjU4NDh9.d1juMyvvnYPMjjmDxD68rXo_9grLyY6INi1f8b1E-AQ">
+	  </div>
+	  <div class="form-group">
+	    <label for="match-id">Match ID</label>
+	    <input type="text" class="form-control" id="match-id" placeholder="1">
+	  </div>
+<!-- 	   <div class="form-group">
+	    <label for="input-json">Input json</label>
+	    <textarea class="form-control" id="input-json" rows="5"></textarea>
+	  </div> -->
+	  <div class="container agent">
+	  	<div class="row">
+	  	</div>
+	</div>
+
+	</form>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+<!--         <button class="btn btn-primary float-right" style="margin-left: 5px;" id="download-matrix">Get matrix</button> -->
+				<!-- <button class="btn btn-primary float-right" style="margin-left: 5px;" id="sent-button">Sent</button> -->
+				<button class="btn btn-primary float-right" style="margin-left: 5px;" id="get-map-button">Update Map</button>
+<!-- 				<button class="btn btn-primary float-right" style="margin-left: 5px;" id="generate-json">Gen JSON</button> -->
+        <!-- <button type="button" class="btn btn-primary float-right" style="margin-left: 5px;" id="get-match">Get Match</button> -->
+
+        <button type="button" class="btn btn-primary float-right" style="margin-left: 5px;" data-toggle="modal" data-target="#exampleModalCenter" id="get-match">
+          Get Match
+        </button>
+			</div>
+			
+		</div>
+	</div>
+  <input type="hidden" id="my-team-id" value="">
+<!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">List Match</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <ul class="list-group">
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+	<table class="table table-bordered mt-5 table-dark" id="board"></table>
+
+	</div>
+
+<div style="position: absolute; top: 10px; right: 10px; position: fixed;">
+  <div class="toast success" role="alert" aria-live="assertive" aria-atomic="true" data-delay=5000>
+    <div class="toast-header">
+    <i class="fas fa-check-circle" style="color: green; margin-right: 5px;"></i>
+      <strong class="mr-auto" style="margin-right: 5px;">Notification</strong>
+      <small> 1 second ago</small>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body toast-success-body">
+      Success
+    </div>
+  </div>
+
+    <div class="toast fail" role="alert" aria-live="assertive" aria-atomic="true" data-delay=5000>
+    <div class="toast-header">
+    <i class="fas fa-exclamation-circle" style="color: red; margin-right: 5px;"></i>
+      <strong class="mr-auto" style="margin-right: 5px;">Notification</strong>
+      <small> 1 second ago</small>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body toast-fail-body">
+      Fail
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script type="text/javascript">
+
+  $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+	// createAgentsDashBoardHtml();
+
+  // $('#download-matrix').on("click", function () {
+  //   const host = $("#host").val().trim();
+  //         const token = $("#token").val().trim();
+  //         const matchID = $("#match-id").val().trim();
+  //         const url = 'http://' + host + '/matches/' + matchID;
+
+  //         fetch(url, {
+  //                 method: "GET",
+  //                 headers:{
+  //                     "Authorization": token,
+  //                 },
+  //             }).then(response => {
+  //               if (response.ok)
+  //               {
+                  
+  //                 response.json().then(json => {
+  //                   $('.toast-success-body').text('Getting data to download...');
+  //                   $('.success').toast('show');
+  //                   downloadMatrixData(json);
+  //                 })
+  //               }
+  //               else
+  //               {
+  //                 $('.toast-fail-body').text(response.statusText);
+  //                 $('.fail').toast('show');
+  //                 // throw new Error(response);
+  //               }
+  //             })
+  // })
+
+  $("#get-match").on("click", function () {
+    const host = $("#host").val().trim();
+          const token = $("#token").val().trim();
+          const url = 'http://' + host + '/matches';
+          fetch(url, {
+                  method: "GET",
+                  headers:{
+                      "Authorization": token,
+                  },
+              }).then(response => {
+                if (response.ok)
+                {
+                  $('.success').toast('show');
+                  response.json().then(json => {
+                    console.log(json);
+                    getMatchID(json);
+                  })
+                }
+                else
+                {
+                  $('.toast-fail-body').text(response.statusText);
+                  $('.fail').toast('show');
+                  // throw new Error(response);
+                }
+              })
+  })
+
+	$("#get-map-button").on("click", function () {
+    const host = $("#host").val().trim();
+          const token = $("#token").val().trim();
+          const matchID = $("#match-id").val().trim();
+          const url = 'http://' + host + '/matches/' + matchID;
+
+          fetch(url, {
+                  method: "GET",
+                  headers:{
+                      "Authorization": token,
+                  },
+              }).then(response => {
+                if (response.ok)
+                {
+                  
+                  response.json().then(json => {
+                    $('.toast-success-body').text('Success in turn ' + json.turn);
+                    $('.success').toast('show');
+                    console.log(json);
+                    createBoard(json);
+                  })
+                }
+                else
+                {
+                  $('.toast-fail-body').text(response.statusText);
+                  $('.fail').toast('show');
+                  // throw new Error(response);
+                }
+              })	})
+
+	// $("#sent-button").on("click", function () {
+		
+	// 	const host = $("#host").val().trim();
+ //        const token = $("#token").val().trim();
+ //        const matchID = $("#match-id").val().trim();
+ //        const json = $("#input-json").val().trim();
+ //        console.log(json)
+ //        const url = 'http://' + host + '/matches/' + matchID + '/action';
+ //        // alert(url);
+ //        fetch(url, {
+ //                mode: 'cors',
+ //                method: "POST",
+ //                headers:{
+ //                    "Authorization": token,
+ //                    "Content-Type": "application/json"
+ //                },
+ //                body: json
+ //            }).then(response => {
+ //            	if (response.ok)
+ //            	{
+	//             	$('.success').toast('show');
+	//             	response.json().then(json => {
+	//             		console.log(json);
+	//             		// createBoard(json);
+	//             	})
+	//             }
+	//             else
+	//             {
+ //                $('.toast-fail-body').text(response.statusText);
+ //                console.log(response);
+ //                $('.fail').toast('show');
+	//             	// throw new Error(response);
+	//             }
+ //            })
+	// })
+
+	// $("#generate-json").on("click", function () {
+	// 	var json = {
+	// 		"actions": [],
+	// 	};
+	// 	$('.agent .row .col').each(function () {
+	// 		var agent_id = $(this).find('input').val();
+	// 		var agent_dX = parseInt($(this).find('select')[0].value);
+	// 		var agent_dY = parseInt($(this).find('select')[1].value);
+	// 		var agent_type_move = $(this).find('select')[2].value;
+	// 		if (agent_id != "")
+	// 		{
+	// 			json.actions.push({
+	// 				"agentID": parseInt(agent_id),
+	// 	            "type": agent_type_move,
+	// 	            "dx": agent_dX,
+	// 	            "dy": agent_dY
+	// 			})
+	// 		}
+	// 	})
+	// 	console.log(json);
+ //    // console.log(JSON.stringify(json));
+	// 	$("#input-json").val(String(JSON.stringify(json)))
+	// })
+
+    function getMatchID(jsonData) {
+      $(".list-group").empty();
+      $("#my-team-id").val(jsonData[0].teamID)
+        for (var i = 0; i < jsonData.length; i++) {
+            $(".list-group").append('<li class="list-group-item d-flex justify-content-between align-items-center">' + jsonData[i].matchTo + ' (TeamID: '+ jsonData[i].teamID +', Time: '+ jsonData[i].turnMillis +', Max: '+ jsonData[i].turns +')' +'<span class="badge badge-primary badge-pill">' + jsonData[i].id + '</span></li>');
+        }
+    }
+
+  	function createBoard(jsonData) {
+    		$(".table").empty();
+    		boardWidth = jsonData.width;
+    		boardHeight = jsonData.height;
+
+    		boardData = jsonData.points;
+
+    		teamsData = jsonData.teams;
+
+    		firstTeamId = teamsData[0].teamID;
+    		firstTeamAgents = teamsData[0].agents;
+        firstTeamTilePoints = teamsData[0].tilePoint;
+        firstTeamAreaPoints = teamsData[0].areaPoint;
+
+        // number of agents
+        agentsNumber = teamsData[0].agents.length;
+        turn = parseInt(jsonData.turn);
+
+    		secondTeamId = teamsData[1].teamID;
+    		secondTeamAgents = teamsData[1].agents;
+        secondTeamTilePoints = teamsData[1].tilePoint;
+        secondTeamAreaPoints = teamsData[1].areaPoint;
+
+        agentsInfo = firstTeamAgents;
+        agentsInfo.concat({secondTeamAgents});
+        tiledBoard = jsonData.tiled;
+
+        $(".team1").text("Team " + firstTeamId)
+        $(".team2").text("Team " + secondTeamId)
+
+    		tableBodyElement = $("<tbody></tbody>")
+    		$(".table").append(tableBodyElement);
+    		boardData.forEach(function (rowData) {
+    			var rowElement = $("<tr></tr>")
+    			var row = tableBodyElement.append(rowElement);
+
+    			rowData.forEach(function (cellData) {
+    				rowElement.append("<td style='text-align: center;' valign='middle'>" + cellData + "</td>");
+    			})
+    		})
+
+    		for (var i = 0; i < jsonData.tiled.length; i++) {
+    			for (var j = 0; j < jsonData.tiled[i].length; j++) {
+    				if (jsonData.tiled[i][j] == firstTeamId)
+    				{
+    					$('.table tr:nth-child('+ (i + 1) +') td:nth-child(' + (j + 1) + ')').css("background-color", '#01579B');
+    				}
+    				else if ((jsonData.tiled[i][j] == secondTeamId))
+    				{
+    					$('.table tr:nth-child('+ (i + 1) +') td:nth-child(' + (j + 1) + ')').css("background-color", '#E65100');
+    				}
+    			}
+    		}
+
+        firstTeamAgents.forEach(function (agentInfo) {
+          $('.table tr:nth-child('+ (agentInfo.y) +') td:nth-child(' + (agentInfo.x) + ')').css("background-color", '#03A9F4');
+            var val = $('.table tr:nth-child('+ (agentInfo.y) +') td:nth-child(' + (agentInfo.x) + ')').text();
+            $('.table tr:nth-child('+ (agentInfo.y) +') td:nth-child(' + (agentInfo.x) + ')').text("")
+            $('.table tr:nth-child('+ (agentInfo.y) +') td:nth-child(' + (agentInfo.x) + ')').append("<span class='circle' data-toggle='tooltip' title='Agent " + agentInfo.agentID + "'>" + val + "</span>");
+        })
+
+        secondTeamAgents.forEach(function (agentInfo) {
+          $('.table tr:nth-child('+ (agentInfo.y) +') td:nth-child(' + (agentInfo.x) + ')').css("background-color", "#FF9800");
+          var val = $('.table tr:nth-child('+ (agentInfo.y) +') td:nth-child(' + (agentInfo.x) + ')').text();
+            $('.table tr:nth-child('+ (agentInfo.y) +') td:nth-child(' + (agentInfo.x) + ')').text("")
+            $('.table tr:nth-child('+ (agentInfo.y) +') td:nth-child(' + (agentInfo.x) + ')').append("<span class='circle' data-toggle='tooltip' title='Agent " + agentInfo.agentID + "'>" + val + "</span>");
+        })
+
+        $('.my-score').text(firstTeamTilePoints + " + " + firstTeamAreaPoints);
+        $('.their-score').text(secondTeamTilePoints + " + " + secondTeamAreaPoints);
+
+  	}
+
+  	// function createAgentsDashBoardHtml() {
+
+  	// 	for (var i = 0; i < 8; i++) {
+  	// 		$(".agent .row").append('<div class="col input-group d-flex flex-column bd-highlight"> <div class="p-2" style="text-align: center;"> <i class="fab fa-android fa-3x"></i> </div><div class="p-2"><input type="text" class="form-control agent-id" placeholder="Id"></div><div class="p-2"> <select class="custom-select" id="horDirection"> <option selected>X</option> <option value=1>+1</option> <option value=-1>-1</option> <option value=0>0</option> </select></div> <div class="p-2"> <select class="custom-select" id="verDirection"> <option selected>Y</option> <option value=1>+1</option> <option value=-1>-1</option> <option value=0>0</option> </select></div> <div class="p-2"> <select class="custom-select" id="type"> <option value="move">Move</option> <option value="remove">Remove</option> <option value="stay">Stay</option> </select></div> </div>');
+  	// 	}
+
+  		
+  	// }
+
+    // function downloadMatrixData(jsonData) {
+    //   var s = jsonData.width + " " + jsonData.height + " " + jsonData.turn + " " + $("#my-team-id").val() + "\n";
+    //   for (var i = 0; i < jsonData.points.length; i++) {
+    //     for (var j = 0; j < jsonData.points[0].length; j++) {
+    //       s += jsonData.points[i][j] + " ";
+    //     }
+    //     s += "\n";
+    //   }
+
+    //   for (var i = 0; i < jsonData.tiled.length; i++) {
+    //     for (var j = 0; j < jsonData.tiled[0].length; j++) {
+    //       s += jsonData.tiled[i][j] + " ";
+    //     }
+    //     s += "\n";
+    //   }
+    //   s += jsonData.teams[0].agents.length + "\n";
+    //   for (var i = 0; i < jsonData.teams[0].agents.length; i++) {
+    //     s += jsonData.teams[0].agents[i].agentID + " " + jsonData.teams[0].agents[i].x + " " + jsonData.teams[0].agents[i].y + "\n";
+    //   }
+
+    //   for (var i = 0; i < jsonData.teams[1].agents.length; i++) {
+    //     s += jsonData.teams[1].agents[i].x + " " + jsonData.teams[1].agents[i].y + "\n";
+    //   }
+
+    //   var element = document.createElement('a');
+    //   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(s));
+    //   element.setAttribute('download', "data.txt");
+
+    //   element.style.display = 'none';
+    //   document.body.appendChild(element);
+
+    //   element.click();
+
+    //   document.body.removeChild(element);
+
+    // }
+
+
+</script>
+
+<style type="text/css">
+  .circle{
+  background-color: transparent;
+  display:block;
+  height:50px;
+  width:50px;
+  border-radius:50%;
+  border:3px solid #F44336;
+  margin:auto;
+  color:#fff;
+  line-height:50px;
+  text-align:center
+}
+
+  td {
+    height: 100px;
+    width: 100px;  
+  }
+
+  .our-scoreboard {
+  width: 130px;
+  height: 100px;
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  left: 10px;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+  text-align: center;
+}
+
+.their-scoreboard {
+  width: 130px;
+  height: 100px;
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  right: 10px;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+  text-align: center;
+}
+</style>
+
+</body>
+</html>
