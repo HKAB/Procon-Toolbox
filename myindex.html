@@ -132,38 +132,6 @@
 
   $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
-	// createAgentsDashBoardHtml();
-
-  // $('#download-matrix').on("click", function () {
-  //   const host = $("#host").val().trim();
-  //         const token = $("#token").val().trim();
-  //         const matchID = $("#match-id").val().trim();
-  //         const url = 'http://' + host + '/matches/' + matchID;
-
-  //         fetch(url, {
-  //                 method: "GET",
-  //                 headers:{
-  //                     "Authorization": token,
-  //                 },
-  //             }).then(response => {
-  //               if (response.ok)
-  //               {
-                  
-  //                 response.json().then(json => {
-  //                   $('.toast-success-body').text('Getting data to download...');
-  //                   $('.success').toast('show');
-  //                   downloadMatrixData(json);
-  //                 })
-  //               }
-  //               else
-  //               {
-  //                 $('.toast-fail-body').text(response.statusText);
-  //                 $('.fail').toast('show');
-  //                 // throw new Error(response);
-  //               }
-  //             })
-  // })
-
   $("#get-match").on("click", function () {
     const host = $("#host").val().trim();
           const token = $("#token").val().trim();
@@ -172,6 +140,7 @@
                   method: "GET",
                   headers:{
                       "Authorization": token,
+                      'Content-type': 'application/json',
                   },
               }).then(response => {
                 if (response.ok)
@@ -221,66 +190,6 @@
                 }
               })	})
 
-	// $("#sent-button").on("click", function () {
-		
-	// 	const host = $("#host").val().trim();
- //        const token = $("#token").val().trim();
- //        const matchID = $("#match-id").val().trim();
- //        const json = $("#input-json").val().trim();
- //        console.log(json)
- //        const url = 'http://' + host + '/matches/' + matchID + '/action';
- //        // alert(url);
- //        fetch(url, {
- //                mode: 'cors',
- //                method: "POST",
- //                headers:{
- //                    "Authorization": token,
- //                    "Content-Type": "application/json"
- //                },
- //                body: json
- //            }).then(response => {
- //            	if (response.ok)
- //            	{
-	//             	$('.success').toast('show');
-	//             	response.json().then(json => {
-	//             		console.log(json);
-	//             		// createBoard(json);
-	//             	})
-	//             }
-	//             else
-	//             {
- //                $('.toast-fail-body').text(response.statusText);
- //                console.log(response);
- //                $('.fail').toast('show');
-	//             	// throw new Error(response);
-	//             }
- //            })
-	// })
-
-	// $("#generate-json").on("click", function () {
-	// 	var json = {
-	// 		"actions": [],
-	// 	};
-	// 	$('.agent .row .col').each(function () {
-	// 		var agent_id = $(this).find('input').val();
-	// 		var agent_dX = parseInt($(this).find('select')[0].value);
-	// 		var agent_dY = parseInt($(this).find('select')[1].value);
-	// 		var agent_type_move = $(this).find('select')[2].value;
-	// 		if (agent_id != "")
-	// 		{
-	// 			json.actions.push({
-	// 				"agentID": parseInt(agent_id),
-	// 	            "type": agent_type_move,
-	// 	            "dx": agent_dX,
-	// 	            "dy": agent_dY
-	// 			})
-	// 		}
-	// 	})
-	// 	console.log(json);
- //    // console.log(JSON.stringify(json));
-	// 	$("#input-json").val(String(JSON.stringify(json)))
-	// })
-
     function getMatchID(jsonData) {
       $(".list-group").empty();
       $("#my-team-id").val(jsonData[0].teamID)
@@ -315,6 +224,9 @@
         agentsInfo = firstTeamAgents;
         agentsInfo.concat({secondTeamAgents});
         tiledBoard = jsonData.tiled;
+
+        obstacles = jsonData.obstacles;
+        treasure = jsonData.treasure;
 
         $(".team1").text("Team " + firstTeamId)
         $(".team2").text("Team " + secondTeamId)
@@ -357,57 +269,20 @@
             $('.table tr:nth-child('+ (agentInfo.y) +') td:nth-child(' + (agentInfo.x) + ')').append("<span class='circle' data-toggle='tooltip' title='Agent " + agentInfo.agentID + "'>" + val + "</span>");
         })
 
+        obstacles.forEach((obstacleCoor) => {
+          $('.table tr:nth-child('+ (obstacleCoor.y) +') td:nth-child(' + (obstacleCoor.x) + ')').css("background-color", '#b2bec3');
+        })
+
+        treasure.forEach((treasureCoor) => {
+          $('.table tr:nth-child('+ (treasureCoor.y) +') td:nth-child(' + (treasureCoor.x) + ')').css("background-color", '#fff200');
+          var val = $('.table tr:nth-child('+ (treasureCoor.y) +') td:nth-child(' + (treasureCoor.x) + ')').text()
+          $('.table tr:nth-child('+ (treasureCoor.y) +') td:nth-child(' + (treasureCoor.x) + ')').text(val.toString() + "+" + treasureCoor.point.toString())
+        })
+
         $('.my-score').text(firstTeamTilePoints + " + " + firstTeamAreaPoints);
         $('.their-score').text(secondTeamTilePoints + " + " + secondTeamAreaPoints);
 
   	}
-
-  	// function createAgentsDashBoardHtml() {
-
-  	// 	for (var i = 0; i < 8; i++) {
-  	// 		$(".agent .row").append('<div class="col input-group d-flex flex-column bd-highlight"> <div class="p-2" style="text-align: center;"> <i class="fab fa-android fa-3x"></i> </div><div class="p-2"><input type="text" class="form-control agent-id" placeholder="Id"></div><div class="p-2"> <select class="custom-select" id="horDirection"> <option selected>X</option> <option value=1>+1</option> <option value=-1>-1</option> <option value=0>0</option> </select></div> <div class="p-2"> <select class="custom-select" id="verDirection"> <option selected>Y</option> <option value=1>+1</option> <option value=-1>-1</option> <option value=0>0</option> </select></div> <div class="p-2"> <select class="custom-select" id="type"> <option value="move">Move</option> <option value="remove">Remove</option> <option value="stay">Stay</option> </select></div> </div>');
-  	// 	}
-
-  		
-  	// }
-
-    // function downloadMatrixData(jsonData) {
-    //   var s = jsonData.width + " " + jsonData.height + " " + jsonData.turn + " " + $("#my-team-id").val() + "\n";
-    //   for (var i = 0; i < jsonData.points.length; i++) {
-    //     for (var j = 0; j < jsonData.points[0].length; j++) {
-    //       s += jsonData.points[i][j] + " ";
-    //     }
-    //     s += "\n";
-    //   }
-
-    //   for (var i = 0; i < jsonData.tiled.length; i++) {
-    //     for (var j = 0; j < jsonData.tiled[0].length; j++) {
-    //       s += jsonData.tiled[i][j] + " ";
-    //     }
-    //     s += "\n";
-    //   }
-    //   s += jsonData.teams[0].agents.length + "\n";
-    //   for (var i = 0; i < jsonData.teams[0].agents.length; i++) {
-    //     s += jsonData.teams[0].agents[i].agentID + " " + jsonData.teams[0].agents[i].x + " " + jsonData.teams[0].agents[i].y + "\n";
-    //   }
-
-    //   for (var i = 0; i < jsonData.teams[1].agents.length; i++) {
-    //     s += jsonData.teams[1].agents[i].x + " " + jsonData.teams[1].agents[i].y + "\n";
-    //   }
-
-    //   var element = document.createElement('a');
-    //   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(s));
-    //   element.setAttribute('download', "data.txt");
-
-    //   element.style.display = 'none';
-    //   document.body.appendChild(element);
-
-    //   element.click();
-
-    //   document.body.removeChild(element);
-
-    // }
-
 
 </script>
 

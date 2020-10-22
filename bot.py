@@ -6,11 +6,13 @@ import subprocess
 import time
 
 # http://sv-procon.uet.vnu.edu.vn:3000/matches/268
+# curl -H 'Authorization: TOKEN' -H 'Content-Type: application/json' -X GET http://sv-procon.uet.vnu.edu.vn:8888/matches
 
-SERVER = "http://112.137.129.202:3000"
-MATCH_ID = 339
-TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTE1IiwiaWF0IjoxNTcxNDY2OTc5LCJleHAiOjE1NzE0NzQxNzl9.GymI-fOo2l05RnEN9A1ka0Oi5uO1145X1bAGe_NSnxU"
-TEAMID = 11
+
+SERVER = "http://sv-procon.uet.vnu.edu.vn:8888"
+MATCH_ID = 9
+TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoicGxhbnkiLCJpYXQiOjE2MDMzMzIyMTEsImV4cCI6MTYwMzQxODYxMX0.hnAT5-pkxxmQOtJFHv9HMEXwX5HGL4T9IcxRrpvCD1o"
+TEAMID = 28
 MAX_TURN = 100
 
 last_turn = -1000
@@ -47,6 +49,14 @@ while (last_turn < MAX_TURN):
 						s = s + str(data["teams"][1]['agents'][x]['agentID']) + " " + str(data["teams"][1]['agents'][x]['x']) + " " + str(data["teams"][1]['agents'][x]['y']) + "\n"
 					for x in range(0, len(data["teams"][0]['agents'])):
 						s = s + str(data["teams"][0]['agents'][x]['x']) + " " + str(data["teams"][0]['agents'][x]['y']) + "\n"
+
+				s = s + str(len(data["obstacles"])) + "\n"
+				for obstacle in data["obstacles"]:
+					s = s + str(obstacle['x']) + " " + str(obstacle['y']) + "\n"
+
+				s = s + str(len(data["treasure"])) + "\n"						
+				for treasure in data["treasure"]:
+					s = s + str(treasure['x']) + " " + str(treasure['y']) + " " + str(treasure['point']) + " " + str(treasure['status']) + "\n"
 
 				with open("board.txt", "w") as f:
 					f.write(s)
